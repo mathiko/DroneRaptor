@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spoofing Application</title>
+  <!-- Include necessary stylesheets -->
+  <link rel="stylesheet" href="styles.css">
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <img src="bilde2.jpg" alt="Small Picture" class="small-picture">
+    <h1 class="title">DroneRaptor</h1>
+    <!-- Map container -->
+    <div id="mapid" style="width: 600px; height: 400px; margin-bottom: 20px;"></div>
+    <!-- Display latitude and longitude -->
+    <div>Latitude: <span id="latitude"></span></div>
+    <div>Longitude: <span id="longitude"></span></div>
+
+    <!-- Additional input field for filename and button to create location file -->
+    <div class="filename-container">
+      <input type="text" id="filename-input" placeholder="Filename" class="filename-input">
+      <button onclick="createLocationFile()" class="button">Create Location File</button>
+    </div>
+
+    <div class="form-container">
+      <label for="location-select" class="label">Select where to send the drone:</label>
+      <select id="location-select" class="select">
+        <!-- Static options for existing locations -->
+        <option value="0">brotorvet</option>
+        <option value="1">kiel</option>
+        <!-- New locations will be dynamically added here -->
+      </select>
+      <button onclick="spoofFile()" class="button">Start Spoofing</button>
+      <div id="error-message" class="error-message"></div>
+    </div>
+  </div>
+  <!-- Leaflet JavaScript -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <!-- Include script.js -->
+  <script src="script.js"></script>
+</body>
+</html>
