@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spoofing Application</title>
+  <!-- Include necessary stylesheets -->
+  <link rel="stylesheet" href="styles.css">
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <img src="bilde2.jpg" alt="Small Picture" class="small-picture">
+    <h1 class="title">Drone Raptor</h1>
+    <!-- Map container -->
+    <div id="mapid"></div>
+    <div id="togglemotion">
+      <input type="checkbox" id="checkbox" onclick="disableEnable()"></input> 
+      <label for="checkbox"><strong>Enable Path motion</strong></label>
+    </div>
+    <!-- Display latitude and longitude -->
+    <div class="row">
+      <div class="column">
+        <div><p id="latp">Latitude:</p><input id="latitude" type="text"></input></div>
+        <div><p id="longp">Longitude:</p><input id="longitude" type="text"></input></div>
+      </div>
+      <div class="column">
+        <div id="startdiv"><p id="startp">Start-pos (lat | long):</p>
+          <input id="startlat" type="text" disabled></input><input id="startlong" type="text" disabled></input>
+        </div>
+        <div id="stopdiv"><p id="stopp">Stop-pos (lat | long):</p>
+          <input id="stoplat" type="text" disabled></input><input id="stoplong" type="text" disabled></input>
+        </div>
+      </div>
+    </div>
+    <!-- Additional input field for filename and button to create location file -->
+    <div class="filename-container">
+      <div id="error-message" class="error-message"></div>
+      <input type="text" id="filename-input" placeholder="Filename" class="filename-input">
+      <input type="text" id="duration-input" placeholder="Duration (s)" class="duration-input">
+      <button onclick="createLocationFile()" class="button">Create Location File</button>
+    </div>
+
+    <div class="form-container">
+      <label for="location-select" class="label">
+        Select where to send the drone:
+      </label>
+      <select id="location-select" class="select">
+        <!-- Static options for existing locations -->
+        <option value="0">brotorvet</option>
+        <option value="1">kiel</option>
+        <!-- New locations will be dynamically added here -->
+      </select>
+      <button onclick="spoofFile()" class="button">Start Spoofing</button>
+    </div>
+  </div>
+  <!-- Leaflet JavaScript -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <!-- Include script.js -->
+  <script src="script.js"></script>
+</body>
+</html>
