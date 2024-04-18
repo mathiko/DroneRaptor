@@ -1,0 +1,213 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Arial', sans-serif;
+  background-color: #909090; /* Set the main background color to black */
+}
+
+.container {
+  margin: 50px auto 50px auto;
+  padding: 20px;
+  background-image: url('bilde.jpg'); /* Set the background image for the container */
+  background-size: cover; /* Cover the entire container */
+  background-repeat: no-repeat; /* Do not repeat the background image */
+  background-position: center; /* Center the background image */
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(42, 42, 42, 0.1);
+  position: relative; /* Set container position to relative for absolute positioning */
+}
+
+.small-picture {
+  position: absolute; /* Set picture position to absolute */
+  top: -5px;
+  left: -10px;
+  width: 120px; /* Adjust picture width */
+  height: auto; /* Maintain aspect ratio */
+  z-index: 1; /* Ensure picture appears above the background */
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #000000; /* Set title color to white */
+  font-family: "Orbitron", serif; /* Use a cooler font */
+  font-size: 36px; /* Adjust font size */
+  letter-spacing: 2px; /* Add letter spacing for emphasis */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Add text shadow for depth */
+}
+
+#mapid {
+  width: 85%;
+  height: 400px;
+  border: 1px black solid;
+  border-radius: 8px;
+  margin: 0 auto;
+  display: block;
+  margin-bottom: 20px;
+}
+
+.column {
+  float: left;
+  width: 40%;
+  height: 100px;
+}
+
+.filename-container {
+  margin-top: 20px; /* Add margin between the new input and the text */
+}
+
+.filename-input {
+  margin-bottom: 10px; /* Add margin below the input field */
+  border-radius: 0px;
+  border-width: 1px;
+}
+
+.duration-input {
+  margin-bottom: 10px; /* Add margin below the input field */
+  border-radius: 0px;
+  border-width: 1px;
+  width: 72px;
+}
+
+.filename-input:focus {
+  outline: none; /* Remove default focus outline */
+  border-color: #040052; /* Change border color on focus to a blue color */
+}
+
+.form-container {
+  text-align: center;
+}
+
+.label {
+  display: block;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+.button {
+  padding: 10px 20px;
+  background-color: #004793;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.button:hover {
+  background-color: #002c5b;
+}
+
+.error-message {
+  color: #ff0000;
+  margin-top: 10px;
+  display: none;
+}
+
+/* Style the latitude and longitude elements for enhanced visibility */
+#latitude {
+  font-size: 13px;
+  font-weight: bold;
+  color: hsl(126, 100%, 14%); /* Set text color to white */
+  margin-bottom: 10px;
+}
+
+#longitude {
+  font-size: 13px;
+  font-weight: bold;
+  color: hsl(126, 100%, 14%); /* Set text color to white */
+  margin-bottom: 10px;
+}
+
+#startlat {
+  width: 100px;
+  font-weight: bold;
+}
+
+#startlong {
+  width: 100px;
+  margin-left: 5px;
+  font-weight: bold;
+}
+
+#stoplat {
+  width: 100px;
+  font-weight: bold;
+}
+
+#stoplong {
+  width: 100px;
+  margin-left: 5px;
+  font-weight: bold;
+}
+
+#startdiv {
+  width: 400px;
+  margin-top: 3px;
+}
+
+#stopdiv {
+  width: 400px;
+  margin-top: 15px;
+}
+
+#togglemotion{
+  margin: 2%;
+}
+
+
+.row:after{
+  content: "";
+  display:table;
+  clear: both;
+}
+
+
+#checkbox {
+  margin-top: 24px; 
+}
+
+label, input[type="checkbox"] {
+  vertical-align: bottom;
+}
+
+#latp {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+#longp {
+  margin-top: 0px;
+  margin-bottom: 1px;
+}
+
+#startp {
+  margin-top: 0px;
+  margin-bottom: 1px;
+}
+
+#stopp {
+  margin-top: 0px;
+  margin-bottom: 1px;
+}
+
+@media screen and (max-width: 480px) {
+ 
+  .column{
+    float:none;
+    margin-top: 3px;
+  }
+  .title{
+    font-size: 6vw;
+  }
+  .small-picture{
+    top: -2px;
+    left: -2px;
+    width: 20vw;
+  }
+}
