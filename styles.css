@@ -1,0 +1,168 @@
+body { /*Sets standard font-style for the whole document, and adds background color*/
+  font-family: 'Arial', sans-serif;
+  background-color: #909090;
+}
+
+#container { /*Centers the application, adds padding to the sides, adds background picture to cover the full div, do not repeat the background more than once, round the corners, sets the div relative to the rest of the site*/
+  margin: auto;
+  padding: 20px;
+  background-image: url('bilde.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  border-radius: 10px;
+  position: relative
+}
+
+#logo { /*Sets the position to absolute so it does not care about anything else, and positions it correctly*/
+  position: absolute;
+  top: -5px;
+  left: -10px;
+  width: 120px;
+  height: 120px;
+}
+
+#title { /*Centers the title, adds margin to the bottom to make some space, change the color, adds a non-standard font-style, sets size and spacing between each letter, and adds a little shadow to the letters*/
+  text-align: center;
+  margin-bottom: 20px;
+  color: #000000;
+  font-family: "Orbitron", serif;
+  font-size: 36px;
+  letter-spacing: 4px;
+  text-shadow: 2px 2px 4px black;
+}
+
+#mapid { /*Sets the width and hight of the leaflet-map, adds a thin black border to it, centers it and rounds the corners a little bit*/
+  width: 85%;
+  height: 400px;
+  border: 2px black solid;
+  border-radius: 5px;
+  margin: auto;
+  margin-bottom: 0px;
+}
+
+.column { /*Both divs inside the columns will float to the left of the column, sets width and height of the columns*/
+  float: left;
+  width: 40%;
+  height: 100px;
+}
+
+#filename-container { /*Adds some space to the top of the filename div*/
+  margin-top: 20px;
+}
+
+#filename-input { /*Adds some space below the filename-input*/
+  margin-bottom: 10px;
+}
+
+#duration-input { /*Adds some space below the duration-input, sets it width*/
+  margin-bottom: 10px;
+  width: 72px;
+}
+
+.select {
+  margin-top: 15px;
+  margin-bottom: 5px;
+  width: 100px;
+}
+
+#form-container { /*Centers the location-select dropdown-menu and label*/
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  width: 265px;
+}
+
+#label { /*Displays as block so the label stacks on top of the select-menu instead of next to it, adds some space over and below the label*/
+  display: block;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.button { /*Adds padding to enlargen the buttons, adds background-color, sets font-color, rounds the corners and changes the mousecursor to a pointing hand when hovering*/
+  padding: 10px 20px;
+  background-color: #004793;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.button:hover { /*Darker background color when hovering the buttons*/
+  background-color: #002c5b;
+}
+
+#error-message { /*Sets color of error-messages, and adds some space above them to separate from other elements, display is set to "none" as standard, and is changed to "block" when its displayed*/
+  color: red;
+  margin-top: 10px;
+  display: none;
+}
+
+#success-message { /*/*Sets color of success-messages, and adds some space above them to separate from other elements, display is set to "none" as standard, and is changed to "block" when its displayed*/
+  color: darkgreen;
+  margin-top: 10px;
+  display: none;
+}
+
+.latLong { /*Changes input size, font thickness and color to the latitude and longitude inputfields, and adds some space below them*/
+  font-size: 13px;
+  font-weight: bold;
+  color: darkgreen;
+  margin-bottom: 10px;
+}
+
+.startStopLat { /*Sets width of inputfields for start and stop latitude motion-locations, and thickens the font*/
+  width: 100px;
+  font-weight: bold;
+}
+
+.startStopLong { /*Sets width of inputfields for start and stop longitude motion-locations, and thickens the font, adds a little space between the lat and long inputfields*/
+  width: 100px;
+  margin-left: 5px;
+  font-weight: bold;
+}
+
+#startdiv { /*Sets div-width for the start inputfields when using motion-location*/
+  width: 400px;
+}
+
+#stopdiv { /*Sets div-width for the stop inputfields when using motion-location, adds some above it to separate from the start inputfields*/
+  width: 400px;
+  margin-top: 15px;
+}
+
+.row:after{ /*Clear flex and formating after row*/
+  content: "";
+  display:table;
+  clear: both;
+}
+
+#checkbox { /*Adds a little margin around the checkbox except for the right side, sets size, changes cursor to a pointing hand when hovered*/
+  margin: 2%;
+  margin-right: 0px;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+label, input[type="checkbox"] { /*Aligns the checkbox label to the middle, so the label is in the middle of the box instead of below or above*/
+  vertical-align: middle;
+}
+
+.paragraph { /*Removes spacing above the inputfield-labels, and adds a tiny margin to the bottom so the label-text doesnt go inside the inputfields*/
+  margin-top: 0px;
+  margin-bottom: 1px;
+}
+
+@media screen and (max-width: 480px) { /*Custom style for screens width width < 480px*/
+  .column{
+    float:none;
+    margin-top: 3px;
+  }
+  .title{
+    font-size: 6vw;
+  }
+  .small-picture{ /*Uplacement of logo*/
+    top: -2px;
+    left: -2px;
+    width: 20vw;
+  }
+}
