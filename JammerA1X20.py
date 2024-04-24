@@ -31,7 +31,7 @@ class JammerA1X20(gr.top_block):
         ##################################################
         # Variables
         ##################################################
-        self.samp_rate = samp_rate = 2.6e6
+        self.samp_rate = samp_rate = 20e6
 
         ##################################################
         # Blocks
@@ -47,8 +47,8 @@ class JammerA1X20(gr.top_block):
         self.osmosdr_sink_0.set_if_gain(20, 0)
         self.osmosdr_sink_0.set_bb_gain(0, 0)
         self.osmosdr_sink_0.set_antenna('', 0)
-        self.osmosdr_sink_0.set_bandwidth(2.6e6, 0)
-        self.analog_noise_source_x_0 = analog.noise_source_c(analog.GR_GAUSSIAN, 1, 0)
+        self.osmosdr_sink_0.set_bandwidth(20e6, 0)
+        self.analog_noise_source_x_0 = analog.fastnoise_source_c(analog.GR_GAUSSIAN, 1, 0, 8192)
 
 
         ##################################################
