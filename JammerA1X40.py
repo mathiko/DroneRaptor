@@ -54,7 +54,7 @@ class JammerA1X40(gr.top_block):
         ##################################################
         # Connections
         ##################################################
-        self.connect((self.analog_noise_source_x_0, 0), (self.osmosdr_sink_0, 0))
+        self.connect((self.analog_noise_source_x_0, 0), (self.osmosdr_sink_0, 0, 8192))
 
 
     def get_samp_rate(self):
