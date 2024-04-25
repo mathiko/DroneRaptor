@@ -119,24 +119,24 @@ var indexCount = 1;
 //This function is called when we want an error message displayed. It changes the error-message displaytype from "none" to "block", which makes it visible.
 function displayErrorMessage(message) {
     //Changes the content of the element to whats send to the function.
-    document.getElementById('error/success-message').textContent = message;
+    document.getElementById('error/file-success-message').textContent = message;
     //Changes the element displaytype from "none" to "block".
-    document.getElementById('error/success-message').style.display = 'block';
+    document.getElementById('error/file-success-message').style.display = 'block';
     //Changes the styling of the message.
-    document.getElementById('error/success-message').style.color = "red";
-    document.getElementById('error/success-message').style.fontWeight = "bold";
-    document.getElementById('error/success-message').style.fontSize = "20";
+    document.getElementById('error/file-success-message').style.color = "red";
+    document.getElementById('error/file-success-message').style.fontWeight = "bold";
+    document.getElementById('error/file-success-message').style.fontSize = "20";
 }
 
-//This does the same as the displayErrorMessage-function, except this shows success-messages instead of error-messages.
 function displaySuccessMessageFile(message) {
-    document.getElementById('error/success-message').textContent = message;
-    document.getElementById('error/success-message').style.display = 'block';
-    document.getElementById('error/success-message').style.color = "darkgreen";
-    document.getElementById('error/success-message').style.fontWeight = "bold";
-    document.getElementById('error/success-message').style.fontSize = "20";
+    document.getElementById('error/file-success-message').textContent = message;
+    document.getElementById('error/file-success-message').style.display = "block";
+    document.getElementById('error/file-success-message').style.color = "darkgreen";
+    document.getElementById('error/file-success-message').style.fontWeight = "bold";
+    document.getElementById('error/file-success-message').style.fontSize = "20";
 }
 
+//This does the same as the displayErrorMessage-function, except this puts the spoofing success-message in a seperate div so we are able to display both "Jamming..." and "Spoofing..." simultaneously.
 function displaySuccessMessageSpoof(message) {
     document.getElementById('success-message-spoof').textContent = message;
     document.getElementById('success-message-spoof').style.display = 'block';
@@ -145,7 +145,7 @@ function displaySuccessMessageSpoof(message) {
     document.getElementById('success-message-spoof').style.fontSize = "20";
 }
 
-//This does the same as the displaySuccessMessage-function, except this puts the jamming success-message in a seperate div so we are able to display both "Jamming..." and "Spoofing..." simultaneously.
+//This does the same as the displayErrorMessage-function, except this puts the jamming success-message in a seperate div so we are able to display both "Jamming..." and "Spoofing..." simultaneously.
 function displaySuccessMessageJam(message) {
     document.getElementById('success-message-jam').textContent = message;
     document.getElementById('success-message-jam').style.display = 'block';
@@ -160,18 +160,19 @@ function hideMessageFile() {
 }
 
 function hideMessageSpoof() {
-    document.getElementById('success-message-jam').style.display = 'none';
+    document.getElementById('success-message-spoof').style.display = 'none';
 }
 
 function hideMessageJam() {
-    document.getElementById('success-message-spoof').style.display = 'none';
+    document.getElementById('success-message-jam').style.display = 'none';
 }
 
 //This function starts the process of spoofing when the "start spoofing"-button is pressed.
 function spoofStart() {
     //Variable to store the index-value of the chosen location from the location dropdown-menu.
     const index = document.getElementById("location-select").value;
-  
+    hideMessageFile();
+    displaySuccessMessageSpoof("Spoofing...");
     //Fetch connects to the "spoof-request" endpoint made on the server, and then POST's index to it as JSON format.
     fetch("/spoof-request", {
         method: "POST", //Declares what type of HTTP-method to use.
@@ -182,8 +183,9 @@ function spoofStart() {
     })
     .then(response => { //.then happens after the fetch, and takes care of the response. If the respons.ok is true, the HTTP-request was successful. If it was not ok, the request was unsuccessful.
         if (response.ok) {
-            console.log("Spoofing started successfully."); //Logs in the terminal that spoofing is started.
-            displaySuccessMessage("Spoofing..."); //Displays that spoofing is ongoing in the html-page.
+            console.log("Spoofing stopped successfully."); //Logs in the terminal that spoofing stopped.
+            hideMessageFile(); //Hides "created file successfully" message.
+	    hideMessageSpoof(); //Hides "Spoofing..." message.
         } 
         
         else {
@@ -201,7 +203,8 @@ function spoofStart() {
 
 function jamStart() {
     const index = document.getElementById("jam-select").value;
-
+    hideMessageFile();
+    displaySuccessMessageJam("Jamming...");
     fetch("/jam-request", {
         method: "POST",
         headers: {
@@ -211,12 +214,9 @@ function jamStart() {
     })
     .then(response => {
         if (response.ok) {
-            console.log("Jamming started successfully.");
-            //When starting jamming, this if-statements makes it so that if the spoofing... is displayed, it does not remove it, however if there is a message that a file is created, it removes it when starting jamming.
-            if ((document.getElementById("error/success-message").textContent == "Location-file was created successfully.") || (document.getElementById("error/success-message").textContent == "Motion-file was created successfully.")) {
-                hideMessageFile();
-            }
-            displaySuccessMessageJam("Jamming...");
+            console.log("Jamming stopped successfully.");
+            hideMessageFile();
+            hideMessageJam();
         } 
         
         else {
@@ -229,6 +229,31 @@ function jamStart() {
     .catch((error) => {
         console.log("Error:", error);
         displayErrorMessage("Unknown error, inspect it further in console.");
+    });
+}
+
+function stopSpoof() {
+    hideMessageSpoof();
+    fetch("/stop-spoof-request", {
+        method: "POST",
+	headers: {
+            "Content-Type": "application/json",	
+        },
+    })
+    .then(response => {
+	if (response.ok) {
+	    console.log("stopping spoofing");
+	}
+
+	else {
+ 	    response.json().then(data => {
+
+	    });
+	}
+    })
+    .catch((error) => {
+	console.log("Error:", error);
+	displayErrorMessage("Unknown error, inspect it further in the console.");
     });
 }
 
@@ -389,7 +414,7 @@ function createLocationFile() {
     //Uses two different fetches, based on if static position or motion is chosen.
     if (!checkbox.checked) {
         //Writes message to html when creating file.
-        displaySuccessMessage("Creating location-file...");
+        displaySuccessMessageFile("Creating location-file...");
         console.log('Creating location-file...');
         fetch('/create-location-file', {
             method: 'POST',
@@ -404,7 +429,7 @@ function createLocationFile() {
                 //If the request works as expected, the location is added to the location dropdown-list.
                 addLocationToSelect(filename);
                 //Success-message is written when the respond is ended (res.end()) from server, and the file-creating process is complete.
-                displaySuccessMessage("Location-file was created successfully.")
+                displaySuccessMessageFile("Location-file was created successfully.")
             } 
 
             else {
@@ -421,7 +446,7 @@ function createLocationFile() {
     }
 
     else { 
-        displaySuccessMessage("Creating motion-file...");
+        displaySuccessMessageFile("Creating motion-file...");
         console.log('Creating motion-file...');
         fetch('/create-motion-location-file', {
             method: 'POST',
@@ -433,7 +458,7 @@ function createLocationFile() {
         .then(response => {
             if (response.ok) {
                 addLocationToSelect(filename);
-                displaySuccessMessage("Motion-file was created successfully.")
+                displaySuccessMessageFile("Motion-file was created successfully.")
             } 
             
             else {

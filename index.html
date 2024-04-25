@@ -41,7 +41,7 @@
     <div id="filename-container"> <!--Div for filename-input, duration-input, and error-/success-messages-->
       <div id="success-message-spoof"></div>
       <div id="success-message-jam"></div> <!--Jamming success-message is set alone above so both spoof and jam can be shown simultaneously-->
-      <div id="error/success-message"></div> <!--Error/success-messages will be shown here-->
+      <div id="error/file-success-message"></div> <!--Error/success-messages will be shown here-->
       <input type="text" id="filename-input" placeholder="Filename"> <!--Inputfield for filename-->
       <input type="text" id="duration-input" placeholder="Duration (s)"> <!--Inputfield for duration-->
       <button onclick="createLocationFile()" class="button">Create Location File</button> <!--Button to create location-file-->
@@ -60,7 +60,8 @@
       </select>
       <button onclick="jamStart()" class="button">Start Jamming</button> <!--Button to start jamming-->
       <button onclick="spoofStart()" class="button">Start Spoofing</button> <!--Button to start spoofing-->
-      <button onclick="stopJam()" class="button">Stop jamming</button>
+      <button onclick="stopJam()" class="button">Stop Jamming</button>
+      <button onclick="stopSpoof()" class="button">Stop Spoofing</button>
     </div>
   </div>
 

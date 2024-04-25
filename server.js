@@ -65,11 +65,35 @@ app.post("/jam-request", (req, res) => {
             res.send("Process is already active, press the HackRFone reset-button and try again.");
         }
     })
-})
+});
 
-app.post("/stop-jam-request", (req, res) => {
-    stopJam();
-})
+app.post("/stop-spoof-request", () => {
+    checkProcessRunning("hackrf_transfer", (isRunning) => {
+        //If there is not already an instance of the process, we start the spoofing-process.
+        if (isRunning) {
+            stopSpoof();
+        }
+        
+        //If there is already an instance, we give an error and don't start a new one.
+        else {
+            console.log("No spoofing-process is running.");
+            displayErrorMessage("No spoofing-process is running.");
+        }
+    });
+});
+
+app.post("/stop-jam-request", () => {
+    checkProcessRunning("python3", (isRunning) => {
+        if (isRunning) {
+            stopJam();
+        }
+
+        else {
+            console.log("No jamming-process is running.");
+            displayErrorMessage("No jamming-process is running.");
+        }
+    })
+});
 
 //Creates an endpoint for the webclient to request the server to create a new location-file.
 app.post('/create-location-file', (req, res) => {
@@ -133,6 +157,10 @@ function startTransferJam(res, index) {
     });
 }
 
+function stopSpoof(res) {
+    exec("pkill -SIGINT hackrf_transfer");
+}
+
 function stopJam() {
     currentProcessJam.stdin.write("\n");
 }
@@ -155,7 +183,7 @@ function checkProcessRunning(processName, callback) {
 }
 
 function createLocationFileInTerminal(filename, lat, lng, dur, res) {
-    const command = `/home/${username}/gps-sdr-sim/./gps-sdr-sim -e "/home/${username}/gps-sdr-sim/brdc1080.24n" -l ${lat},${lng},100 -b 8 -d ${dur} -o "/home/${username}/gps-sdr-sim/${filename}.bin"`;
+    const command = `/home/${username}/gps-sdr-sim/./gps-sdr-sim -e "/home/${username}/gps-sdr-sim/brdc1140.24n" -l ${lat},${lng},100 -b 8 -d ${dur} -o "/home/${username}/gps-sdr-sim/${filename}.bin"`;
     const createProcess = exec(command);
 
     createProcess.stdout.on('data', (data) => {
@@ -189,7 +217,7 @@ function createMotionLocationFileInTerminal(filename, lat, lng, lat2, lng2, dur,
         res.end();
     });
 
-    const command2 = `/home/${username}/gps-sdr-sim/./gps-sdr-sim -x "/home/${username}/DroneRaptor/Trajectory.csv" -b 8 -d ${dur} -e "/home/${username}/gps-sdr-sim/brdc1080.24n" -o "/home/${username}/gps-sdr-sim/${filename}.bin"`;
+    const command2 = `/home/${username}/gps-sdr-sim/./gps-sdr-sim -x "/home/${username}/DroneRaptor/Trajectory.csv" -b 8 -d ${dur} -e "/home/${username}/gps-sdr-sim/brdc1140.24n" -o "/home/${username}/gps-sdr-sim/${filename}.bin"`;
     const createProcess2 = exec(command2);
 
     createProcess2.stdout.on('data', (data) => {
