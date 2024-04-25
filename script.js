@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', function() {
 //This is a counter to make sure the correct value is given to the new locations added, so that the positions added to the select dropdownmenu gets the correct indexation. There are two standard positions, which is indexed 0 and 1, and therefore we start this at 1, so that the next element added gets the index 2.
 var indexCount = 1;
 
-//This function is called when we want an error message displayed. It changes the error-message displaytype from "none" to "block", which makes it visible.
+//This function is called when we want an error message displayed. It changes the error/file-success-message displaytype from "none" to "block", which makes it visible, and then styles it.
 function displayErrorMessage(message) {
     //Changes the content of the element to whats send to the function.
     document.getElementById('error/file-success-message').textContent = message;
@@ -128,6 +128,7 @@ function displayErrorMessage(message) {
     document.getElementById('error/file-success-message').style.fontSize = "20";
 }
 
+//This function is called when we want a success-message from creating a file displayed. It changes the error/file-success-message displaytype from "none" to "block", which makes it visible, and then styles it.
 function displaySuccessMessageFile(message) {
     document.getElementById('error/file-success-message').textContent = message;
     document.getElementById('error/file-success-message').style.display = "block";
@@ -136,7 +137,7 @@ function displaySuccessMessageFile(message) {
     document.getElementById('error/file-success-message').style.fontSize = "20";
 }
 
-//This does the same as the displayErrorMessage-function, except this puts the spoofing success-message in a seperate div so we are able to display both "Jamming..." and "Spoofing..." simultaneously.
+//This does the same as the displaySuccessMessageFile-function, except this puts the spoofing success-message in a seperate div so we are able to display both "Jamming...", "Spoofing..." and creating file success-message simultaneously.
 function displaySuccessMessageSpoof(message) {
     document.getElementById('success-message-spoof').textContent = message;
     document.getElementById('success-message-spoof').style.display = 'block';
@@ -145,7 +146,6 @@ function displaySuccessMessageSpoof(message) {
     document.getElementById('success-message-spoof').style.fontSize = "20";
 }
 
-//This does the same as the displayErrorMessage-function, except this puts the jamming success-message in a seperate div so we are able to display both "Jamming..." and "Spoofing..." simultaneously.
 function displaySuccessMessageJam(message) {
     document.getElementById('success-message-jam').textContent = message;
     document.getElementById('success-message-jam').style.display = 'block';
@@ -154,11 +154,12 @@ function displaySuccessMessageJam(message) {
     document.getElementById('success-message-jam').style.fontSize = "20";
 }
 
-//This function hides the error/success-message again, and therefore changes the displaytype from "block" to "none", which effectively hides the content of the element.
+//This function hides the error/file-success-message, and therefore changes the displaytype from "block" to "none", which effectively hides the content of the element.
 function hideMessageFile() {
     document.getElementById('error/file-success-message').style.display = 'none';
 }
 
+//This function hides the spoofing success-message, and therefore changes the displaytype from "block" to "none", which effectively hides the content of the element.
 function hideMessageSpoof() {
     document.getElementById('success-message-spoof').style.display = 'none';
 }
@@ -171,8 +172,8 @@ function hideMessageJam() {
 function spoofStart() {
     //Variable to store the index-value of the chosen location from the location dropdown-menu.
     const index = document.getElementById("location-select").value;
-    hideMessageFile();
-    displaySuccessMessageSpoof("Spoofing...");
+    hideMessageFile(); //Removes success message from file creation when starting spoof-process.
+    displaySuccessMessageSpoof("Spoofing..."); //Displays "spoofing..." when starting spoof-process.
     //Fetch connects to the "spoof-request" endpoint made on the server, and then POST's index to it as JSON format.
     fetch("/spoof-request", {
         method: "POST", //Declares what type of HTTP-method to use.
@@ -184,8 +185,7 @@ function spoofStart() {
     .then(response => { //.then happens after the fetch, and takes care of the response. If the respons.ok is true, the HTTP-request was successful. If it was not ok, the request was unsuccessful.
         if (response.ok) {
             console.log("Spoofing stopped successfully."); //Logs in the terminal that spoofing stopped.
-            hideMessageFile(); //Hides "created file successfully" message.
-	    hideMessageSpoof(); //Hides "Spoofing..." message.
+	        hideMessageSpoof(); //Hides "Spoofing..." message.
         } 
         
         else {
@@ -215,7 +215,6 @@ function jamStart() {
     .then(response => {
         if (response.ok) {
             console.log("Jamming stopped successfully.");
-            hideMessageFile();
             hideMessageJam();
         } 
         
@@ -232,7 +231,9 @@ function jamStart() {
     });
 }
 
+//This function requests the stop spoofing-function from on the server.
 function stopSpoof() {
+    //Hides the "spoofing...".
     hideMessageSpoof();
     fetch("/stop-spoof-request", {
         method: "POST",
@@ -242,12 +243,12 @@ function stopSpoof() {
     })
     .then(response => {
 	if (response.ok) {
-	    console.log("stopping spoofing");
+	    console.log("Stopping spoofing.");
 	}
 
 	else {
  	    response.json().then(data => {
-
+            console.log("Failed to stop spoofing.", data);
 	    });
 	}
     })
@@ -267,12 +268,12 @@ function stopJam() {
     })
     .then(response => {
         if (response.ok) {
-            console.log("stopping jamming");
+            console.log("Stopping jamming.");
         } 
         
         else {
             response.json().then(data => {
-                
+                console.log("Failed to stop jamming.", data);
             });
         }
     })

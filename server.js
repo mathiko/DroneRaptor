@@ -51,6 +51,7 @@ app.post('/spoof-request', (req, res) => { //req is the info of the request from
     });
 });
 
+
 app.post("/jam-request", (req, res) => {
     const index = req.body.index;
 
@@ -67,22 +68,24 @@ app.post("/jam-request", (req, res) => {
     })
 });
 
-app.post("/stop-spoof-request", () => {
+//Endpoint for the webclient script to request stop of spoofing via POST http-requests.
+app.post("/stop-spoof-request", (req, res) => {
+    //Ensures that there is indeed a spoofing process running already.
     checkProcessRunning("hackrf_transfer", (isRunning) => {
-        //If there is not already an instance of the process, we start the spoofing-process.
         if (isRunning) {
+            //Runs stop spoofing function if process is running.
             stopSpoof();
         }
         
-        //If there is already an instance, we give an error and don't start a new one.
+        //If there is no process running, we write it to the console.
         else {
             console.log("No spoofing-process is running.");
-            displayErrorMessage("No spoofing-process is running.");
+            res.send("No spoofing-process is running.");
         }
     });
 });
 
-app.post("/stop-jam-request", () => {
+app.post("/stop-jam-request", (req, res) => {
     checkProcessRunning("python3", (isRunning) => {
         if (isRunning) {
             stopJam();
@@ -90,7 +93,7 @@ app.post("/stop-jam-request", () => {
 
         else {
             console.log("No jamming-process is running.");
-            displayErrorMessage("No jamming-process is running.");
+            res.send("No jamming-process is running.");
         }
     })
 });
@@ -157,10 +160,12 @@ function startTransferJam(res, index) {
     });
 }
 
+//Function that runs a command in terminal to kill the "hackrf_transfer"-process.
 function stopSpoof(res) {
     exec("pkill -SIGINT hackrf_transfer");
 }
 
+//Function that sends nextline to the jamming-process, as it is an inbuilt function in the jamming program to stop the jamming-process.
 function stopJam() {
     currentProcessJam.stdin.write("\n");
 }
