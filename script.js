@@ -129,12 +129,20 @@ function displayErrorMessage(message) {
 }
 
 //This does the same as the displayErrorMessage-function, except this shows success-messages instead of error-messages.
-function displaySuccessMessage(message) {
+function displaySuccessMessageFile(message) {
     document.getElementById('error/success-message').textContent = message;
     document.getElementById('error/success-message').style.display = 'block';
     document.getElementById('error/success-message').style.color = "darkgreen";
     document.getElementById('error/success-message').style.fontWeight = "bold";
     document.getElementById('error/success-message').style.fontSize = "20";
+}
+
+function displaySuccessMessageSpoof(message) {
+    document.getElementById('success-message-spoof').textContent = message;
+    document.getElementById('success-message-spoof').style.display = 'block';
+    document.getElementById('success-message-spoof').style.color = "darkgreen";
+    document.getElementById('success-message-spoof').style.fontWeight = "bold";
+    document.getElementById('success-message-spoof').style.fontSize = "20";
 }
 
 //This does the same as the displaySuccessMessage-function, except this puts the jamming success-message in a seperate div so we are able to display both "Jamming..." and "Spoofing..." simultaneously.
@@ -147,9 +155,16 @@ function displaySuccessMessageJam(message) {
 }
 
 //This function hides the error/success-message again, and therefore changes the displaytype from "block" to "none", which effectively hides the content of the element.
-function hideMessage() {
-    document.getElementById('error/success-message').style.display = 'none';
+function hideMessageFile() {
+    document.getElementById('error/file-success-message').style.display = 'none';
+}
+
+function hideMessageSpoof() {
     document.getElementById('success-message-jam').style.display = 'none';
+}
+
+function hideMessageJam() {
+    document.getElementById('success-message-spoof').style.display = 'none';
 }
 
 //This function starts the process of spoofing when the "start spoofing"-button is pressed.
@@ -199,7 +214,7 @@ function jamStart() {
             console.log("Jamming started successfully.");
             //When starting jamming, this if-statements makes it so that if the spoofing... is displayed, it does not remove it, however if there is a message that a file is created, it removes it when starting jamming.
             if ((document.getElementById("error/success-message").textContent == "Location-file was created successfully.") || (document.getElementById("error/success-message").textContent == "Motion-file was created successfully.")) {
-                hideMessage();
+                hideMessageFile();
             }
             displaySuccessMessageJam("Jamming...");
         } 
@@ -218,6 +233,7 @@ function jamStart() {
 }
 
 function stopJam() {
+    hideMessageJam();
     fetch("/stop-jam-request", {
         method: "POST",
         headers: {
@@ -387,8 +403,6 @@ function createLocationFile() {
             if (response.ok) {
                 //If the request works as expected, the location is added to the location dropdown-list.
                 addLocationToSelect(filename);
-                //Hides all previous success-messages if any.
-                hideMessage();
                 //Success-message is written when the respond is ended (res.end()) from server, and the file-creating process is complete.
                 displaySuccessMessage("Location-file was created successfully.")
             } 
@@ -419,7 +433,6 @@ function createLocationFile() {
         .then(response => {
             if (response.ok) {
                 addLocationToSelect(filename);
-                hideMessage();
                 displaySuccessMessage("Motion-file was created successfully.")
             } 
             
