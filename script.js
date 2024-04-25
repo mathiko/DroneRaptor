@@ -185,7 +185,6 @@ function spoofStart() {
     .then(response => { //.then happens after the fetch, and takes care of the response. If the respons.ok is true, the HTTP-request was successful. If it was not ok, the request was unsuccessful.
         if (response.ok) {
             console.log("Spoofing stopped successfully."); //Logs in the terminal that spoofing stopped.
-	        hideMessageSpoof(); //Hides "Spoofing..." message.
         } 
         
         else {
@@ -215,7 +214,6 @@ function jamStart() {
     .then(response => {
         if (response.ok) {
             console.log("Jamming stopped successfully.");
-            hideMessageJam();
         } 
         
         else {
@@ -242,15 +240,9 @@ function stopSpoof() {
         },
     })
     .then(response => {
-	if (response.ok) {
-	    console.log("Stopping spoofing.");
-	}
-
-	else {
- 	    response.json().then(data => {
-            console.log("Failed to stop spoofing.", data);
-            displayErrorMessage(data);
-	    });
+    //If reponse.ok is false, which indicates the process is not running, we display errormessage in the html-document.
+	if (!response.ok) {
+	    displayErrorMessage("No spoofing-process is running.");
 	}
     })
     .catch((error) => {
@@ -268,32 +260,15 @@ function stopJam() {
         },
     })
     .then(response => {
-        if (response.ok) {
-            console.log("Stopping jamming.");
+        if (!response.ok) {
+            displayErrorMessage("No jamming-process is running.");
         } 
-        
-        else {
-            response.json().then(data => {
-                console.log("Failed to stop jamming.", data);
-                displayErrorMessage(data);
-            });
-        }
     })
     .catch((error) => {
         console.log("Error:", error);
         displayErrorMessage("Unknown error, inspect it further in console.");
     });
 }
-
-app.post("/display-error-spoof", () => {
-    //Ensures that there is indeed a spoofing process running already.
-    displayErrorMessage("No spoofing-process is running.");
-});
-
-app.post("/display-error-jam", () => {
-    //Ensures that there is indeed a spoofing process running already.
-    displayErrorMessage("No jamming-process is running.");
-});
 
 //This is the function that is called everytime the checkbox is pressed, and overall it disables or enables the path motion function of the spoofing.
 function disableEnable() {

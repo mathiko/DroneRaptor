@@ -45,8 +45,8 @@ app.post('/spoof-request', (req, res) => { //req is the info of the request from
         
         //If there is already an instance, we give an error and don't start a new one.
         else {
-            console.log("Process is already active, press the HackRFone reset-button and try again.");
-            res.send("Process is already active, press the HackRFone reset-button and try again.");
+            console.log("Process is already active.");
+            res.send("Process is already active.");
         }
     });
 });
@@ -62,8 +62,8 @@ app.post("/jam-request", (req, res) => {
         }
 
         else {
-            console.log("Process is already active, press the HackRFone reset-button and try again.");
-            res.send("Process is already active, press the HackRFone reset-button and try again.");
+            console.log("Process is already active.");
+            res.send("Process is already active.");
         }
     })
 });
@@ -80,12 +80,7 @@ app.post("/stop-spoof-request", (req, res) => {
         //If there is no process running, we write it to the console.
         else {
             console.log("No spoofing-process is running.");
-            fetch("/display-error-spoof", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            })
+            res.status(400).send("Nothin special;)"); //Sends an error 400 message if the process is not running, so that the !response.ok is true in the webclient, and therefore lets it display errormessage on the screen.
         }
     });
 });
@@ -98,12 +93,7 @@ app.post("/stop-jam-request", (req, res) => {
 
         else {
             console.log("No jamming-process is running.");
-            fetch("/display-error-jam", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            })
+            res.status(400).send("Nothin special;)");
         }
     })
 });
