@@ -122,8 +122,10 @@ function displayErrorMessage(message) {
     document.getElementById('error/success-message').textContent = message;
     //Changes the element displaytype from "none" to "block".
     document.getElementById('error/success-message').style.display = 'block';
-    //changes the color of the message to red.
+    //Changes the styling of the message.
     document.getElementById('error/success-message').style.color = "red";
+    document.getElementById('error/success-message').style.fontWeight = "bold";
+    document.getElementById('error/success-message').style.fontSize = "20";
 }
 
 //This does the same as the displayErrorMessage-function, except this shows success-messages instead of error-messages.
@@ -131,11 +133,23 @@ function displaySuccessMessage(message) {
     document.getElementById('error/success-message').textContent = message;
     document.getElementById('error/success-message').style.display = 'block';
     document.getElementById('error/success-message').style.color = "darkgreen";
+    document.getElementById('error/success-message').style.fontWeight = "bold";
+    document.getElementById('error/success-message').style.fontSize = "20";
+}
+
+//This does the same as the displaySuccessMessage-function, except this puts the jamming success-message in a seperate div so we are able to display both "Jamming..." and "Spoofing..." simultaneously.
+function displaySuccessMessageJam(message) {
+    document.getElementById('success-message-jam').textContent = message;
+    document.getElementById('success-message-jam').style.display = 'block';
+    document.getElementById('success-message-jam').style.color = "darkgreen";
+    document.getElementById('success-message-jam').style.fontWeight = "bold";
+    document.getElementById('success-message-jam').style.fontSize = "20";
 }
 
 //This function hides the error/success-message again, and therefore changes the displaytype from "block" to "none", which effectively hides the content of the element.
 function hideMessage() {
     document.getElementById('error/success-message').style.display = 'none';
+    document.getElementById('success-message-jam').style.display = 'none';
 }
 
 //This function starts the process of spoofing when the "start spoofing"-button is pressed.
@@ -143,8 +157,8 @@ function spoofFile() {
     //Variable to store the index-value of the chosen location from the location dropdown-menu.
     const index = document.getElementById("location-select").value;
   
-    //Fetch connects to the "spoof-file" endpoint made in server.js, and then POST's index to it as JSON format.
-    fetch("/spoof-file", {
+    //Fetch connects to the "spoof-request" endpoint made on the server, and then POST's index to it as JSON format.
+    fetch("/spoof-request", {
         method: "POST", //Declares what type of HTTP-method to use.
         headers: { //Declares what type of content will be sent with the POST.
             "Content-Type": "application/json",
@@ -154,19 +168,18 @@ function spoofFile() {
     .then(response => { //.then happens after the fetch, and takes care of the response. If the respons.ok is true, the HTTP-request was successful. If it was not ok, the request was unsuccessful.
         if (response.ok) {
             console.log("Spoofing started successfully."); //Logs in the terminal that spoofing is started.
-            hideMessage(); //Hides errormessage if there ever was one.
-            displaySuccessMessage("Spoofing..."); //Displays successmessage on the HTML-page.
+            displaySuccessMessage("Spoofing..."); //Displays that spoofing is ongoing in the html-page.
         } 
         
         else {
             response.json().then(data => { //If the response was not ok, we read the response JSON-data and print the data-message.
-                console.error("Failed to start spoofing:", data.message);
+                console.log("Failed to start spoofing:", data.message);
                 displayErrorMessage(data.message); //We display the errormessage on the HTML-page.
             });
         }
     })
     .catch((error) => { //If anything were to go wrong while calling the fetch-function, the catch will write an error to both the terminal and the HTML-page.
-        console.error("Error:", error);
+        console.log("Error:", error);
         displayErrorMessage("Unknown error, inspect it further in console.");
     });
 }
@@ -174,7 +187,7 @@ function spoofFile() {
 function jamFile() {
     const index = document.getElementById("jam-select").value;
 
-    fetch("/jam-file", {
+    fetch("/jam-request", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -184,19 +197,22 @@ function jamFile() {
     .then(response => {
         if (response.ok) {
             console.log("Jamming started successfully.");
-            hideMessage();
-            displaySuccessMessage("Jamming...");
+            //When starting jamming, this if-statements makes it so that if the spoofing... is displayed, it does not remove it, however if there is a message that a file is created, it removes it when starting jamming.
+            if ((document.getElementById("error/success-message").textContent == "Location-file was created successfully.") || (document.getElementById("error/success-message").textContent == "Motion-file was created successfully.")) {
+                hideMessage();
+            }
+            displaySuccessMessageJam("Jamming...");
         } 
         
         else {
             response.json().then(data => {
-                console.error("Failed to start jamming:", data.message);
+                console.log("Failed to start jamming:", data.message);
                 displayErrorMessage(data.message);
             });
         }
     })
     .catch((error) => {
-        console.error("Error:", error);
+        console.log("Error:", error);
         displayErrorMessage("Unknown error, inspect it further in console.");
     });
 }
@@ -334,7 +350,7 @@ function createLocationFile() {
     if (!checkbox.checked) {
         //Writes message to html when creating file.
         displaySuccessMessage("Creating location-file...");
-        //Fetch connects to the "create-location-file" endpoint made in server.js, and then POST's lat, lng and dur to it as JSON format.
+        console.log('Creating location-file...');
         fetch('/create-location-file', {
             method: 'POST',
             headers: {
@@ -345,40 +361,39 @@ function createLocationFile() {
         })
         .then(response => {
             if (response.ok) {
-                console.log('Creating location-file...');
                 //If the request works as expected, the location is added to the location dropdown-list.
                 addLocationToSelect(filename);
+                //Hides all previous success-messages if any.
                 hideMessage();
+                //Success-message is written when the respond is ended (res.end()) from server, and the file-creating process is complete.
                 displaySuccessMessage("Location-file was created successfully.")
             } 
 
             else {
                 response.json().then(data => {
-                    console.error('Failed to create location-file:', data.message);
+                    console.log('Failed to create location-file:', data.message);
                     displayErrorMessage(data.message);
                 });
             }
         })
         .catch((error) => {
-            console.error('Error:', error);
+            console.log('Error:', error);
             displayErrorMessage('Unknown error, inspect it further in console.');
         });
     }
 
     else { 
         displaySuccessMessage("Creating motion-file...");
-        //Fetch connects to the "create-motion-location-file" endpoint made in server.js, and then POST's lat, lng, lat2, lng2 and dur to it as JSON format.
+        console.log('Creating motion-file...');
         fetch('/create-motion-location-file', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            //Converts lat, lng , lat2, lng2 and dur to JSON-format, and appends it to the POST-body.
             body: JSON.stringify({ filename: filename, lat, lng, lat2, lng2, dur }),
         })
         .then(response => {
             if (response.ok) {
-                console.log('Creating motion location-file...');
                 addLocationToSelect(filename);
                 hideMessage();
                 displaySuccessMessage("Motion-file was created successfully.")
@@ -386,13 +401,13 @@ function createLocationFile() {
             
             else {
                 response.json().then(data => {
-                    console.error('Failed to create motion location-file:', data.message);
+                    console.log('Failed to create motion-file:', data.message);
                     displayErrorMessage(data.message);
                 });
             }
         })
         .catch((error) => {
-            console.error('Error:', error);
+            console.log('Error:', error);
             displayErrorMessage('Unknown error, inspect it further in console.');
         });
     }

@@ -90,18 +90,6 @@ body { /*Sets standard font-style for the whole document, and adds background co
   background-color: #002c5b;
 }
 
-#error-message { /*Sets color of error-messages, and adds some space above them to separate from other elements, display is set to "none" as standard, and is changed to "block" when its displayed*/
-  color: red;
-  margin-top: 10px;
-  display: none;
-}
-
-#success-message { /*/*Sets color of success-messages, and adds some space above them to separate from other elements, display is set to "none" as standard, and is changed to "block" when its displayed*/
-  color: darkgreen;
-  margin-top: 10px;
-  display: none;
-}
-
 .latLong { /*Changes input size, font thickness and color to the latitude and longitude inputfields, and adds some space below them*/
   font-size: 13px;
   font-weight: bold;
