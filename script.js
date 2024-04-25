@@ -249,6 +249,7 @@ function stopSpoof() {
 	else {
  	    response.json().then(data => {
             console.log("Failed to stop spoofing.", data);
+            displayErrorMessage(data);
 	    });
 	}
     })
@@ -274,6 +275,7 @@ function stopJam() {
         else {
             response.json().then(data => {
                 console.log("Failed to stop jamming.", data);
+                displayErrorMessage(data);
             });
         }
     })
@@ -282,6 +284,16 @@ function stopJam() {
         displayErrorMessage("Unknown error, inspect it further in console.");
     });
 }
+
+app.post("/display-error-spoof", () => {
+    //Ensures that there is indeed a spoofing process running already.
+    displayErrorMessage("No spoofing-process is running.");
+});
+
+app.post("/display-error-jam", () => {
+    //Ensures that there is indeed a spoofing process running already.
+    displayErrorMessage("No jamming-process is running.");
+});
 
 //This is the function that is called everytime the checkbox is pressed, and overall it disables or enables the path motion function of the spoofing.
 function disableEnable() {

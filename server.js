@@ -80,7 +80,12 @@ app.post("/stop-spoof-request", (req, res) => {
         //If there is no process running, we write it to the console.
         else {
             console.log("No spoofing-process is running.");
-            res.send("No spoofing-process is running.");
+            fetch("/display-error-spoof", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            })
         }
     });
 });
@@ -93,7 +98,12 @@ app.post("/stop-jam-request", (req, res) => {
 
         else {
             console.log("No jamming-process is running.");
-            res.send("No jamming-process is running.");
+            fetch("/display-error-jam", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            })
         }
     })
 });
