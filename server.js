@@ -67,6 +67,10 @@ app.post("/jam-request", (req, res) => {
     })
 })
 
+app.post("/stop-jam-request", (req, res) => {
+    stopJam();
+})
+
 //Creates an endpoint for the webclient to request the server to create a new location-file.
 app.post('/create-location-file', (req, res) => {
     //This declares all variables at once, and the req.body knows where to append which value received from the webclient because the names match.
@@ -127,6 +131,10 @@ function startTransferJam(res, index) {
         console.log('Jamming stopped successfully.');
         res.end();
     });
+}
+
+function stopJam() {
+    currentProcessJam.stdin.write("\n");
 }
 
 //This is the function that checks if a process with a specific name is running. It takes in the name of the process we want to check, as well as a callback function that will be set to return true or false.

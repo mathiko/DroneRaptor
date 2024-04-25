@@ -153,7 +153,7 @@ function hideMessage() {
 }
 
 //This function starts the process of spoofing when the "start spoofing"-button is pressed.
-function spoofFile() {
+function spoofStart() {
     //Variable to store the index-value of the chosen location from the location dropdown-menu.
     const index = document.getElementById("location-select").value;
   
@@ -184,7 +184,7 @@ function spoofFile() {
     });
 }
 
-function jamFile() {
+function jamStart() {
     const index = document.getElementById("jam-select").value;
 
     fetch("/jam-request", {
@@ -208,6 +208,30 @@ function jamFile() {
             response.json().then(data => {
                 console.log("Failed to start jamming:", data.message);
                 displayErrorMessage(data.message);
+            });
+        }
+    })
+    .catch((error) => {
+        console.log("Error:", error);
+        displayErrorMessage("Unknown error, inspect it further in console.");
+    });
+}
+
+function stopJam() {
+    fetch("/stop-jam-request", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    })
+    .then(response => {
+        if (response.ok) {
+            console.log("stopping jamming");
+        } 
+        
+        else {
+            response.json().then(data => {
+                
             });
         }
     })
