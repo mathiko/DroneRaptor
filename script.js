@@ -99,7 +99,7 @@ document.addEventListener('DOMContentLoaded', function() {
             else if (((lat != null) && (lng != null)) && ((lat2 == null) || (lng2 == null))){
                 addToSecond();
                 //Runs speed-calculating function to show speed on website.
-                calculateSpeed(lat, lng, lat2, lng2);
+                calculateSpeedAuto(lat, lng, lat2, lng2);
             }
 
             //If both lat and lng is given a value for both first and second position, we start over and give the pressed location to the first position again.
@@ -121,9 +121,22 @@ document.addEventListener('DOMContentLoaded', function() {
 var indexCount = 1;
 
 //Function that calculates the speed using the two positions given as arguments.
-function calculateSpeed(lat1, lng1, lat2, lng2) {
-	//Displays the speed on the website.
-	document.getElementById("speed").textContent = `${lat},${lng},${lat2},${lng2}`;
+function calculateSpeedAuto(lat1, lng1, lat2, lng2) {
+    //Displays the speed on the website.
+    document.getElementById("speed").textContent = `${lat},${lng},${lat2},${lng2}`;
+}
+
+function calculateSpeedButton() {
+    const lat = document.getElementById('startlat').value;
+    const lng = document.getElementById('startlong').value;
+    const lat2 = document.getElementById('stoplat').value;
+    const lng2 = document.getElementById('stoplong').value;
+    if ((lat != (null || "")) && (lng != (null || "")) && (lat2 != (null || "")) && (lng2 != (null || ""))) {
+    	document.getElementById("speed").textContent = `${lat},${lng},${lat2},${lng2}`;
+    }
+    else {
+    	document.getElementById("speed").textContent = "";
+    }
 }
 
 //This function is called when we want an error message displayed. It changes the error/file-success-message displaytype from "none" to "block", which makes it visible, and then styles it.
@@ -412,6 +425,8 @@ function createLocationFile() {
 
     //Uses two different fetches, based on if static position or motion is chosen.
     if (!checkbox.checked) {
+    	const lat = document.getElementById('latitude').value;
+        const lng = document.getElementById('longitude').value;
         //Writes message to html when creating file.
         displaySuccessMessageFile("Creating location-file...");
         console.log('Creating location-file...');
@@ -445,6 +460,10 @@ function createLocationFile() {
     }
 
     else { 
+    	const lat = document.getElementById('startlat').value;
+        const lng = document.getElementById('startlong').value;
+        const lat2 = document.getElementById('stoplat').value;
+        const lng2 = document.getElementById('stoplong').value;
         displaySuccessMessageFile("Creating motion-file...");
         console.log('Creating motion-file...');
         fetch('/create-motion-location-file', {

@@ -219,7 +219,6 @@ function createMotionLocationFileInTerminal(filename, lat, lng, lat2, lng2, dur,
 
     createProcess1.on('exit', () => {
         console.log(`Location file "Trajectory.csv" created successfully.`);
-        res.end();
     });
 
     const command2 = `/home/${username}/gps-sdr-sim/./gps-sdr-sim -x "/home/${username}/DroneRaptor/Trajectory.csv" -b 8 -d ${dur} -e "/home/${username}/gps-sdr-sim/brdc1140.24n" -o "/home/${username}/gps-sdr-sim/${filename}.bin"`;
