@@ -98,6 +98,8 @@ document.addEventListener('DOMContentLoaded', function() {
             //If both of the inputfields for position one is given values, and either lat2 or lng2 is not given a value, we add to the inputfields for the second position.
             else if (((lat != null) && (lng != null)) && ((lat2 == null) || (lng2 == null))){
                 addToSecond();
+                //Runs speed-calculating function to show speed on website.
+                calculateSpeed(lat, lng, lat2, lng2);
             }
 
             //If both lat and lng is given a value for both first and second position, we start over and give the pressed location to the first position again.
@@ -108,6 +110,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 document.getElementById("stoplat").value = lat2;
                 document.getElementById("stoplong").value = lng2;
                 addToFirst();
+                //Removes the speed from the screen.
+                document.getElementById("speed").textContent = "";
             }
         }
     });
@@ -115,6 +119,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
 //This is a counter to make sure the correct value is given to the new locations added, so that the positions added to the select dropdownmenu gets the correct indexation. There are two standard positions, which is indexed 0 and 1, and therefore we start this at 1, so that the next element added gets the index 2.
 var indexCount = 1;
+
+//Function that calculates the speed using the two positions given as arguments.
+function calculateSpeed(lat1, lng1, lat2, lng2) {
+	//Displays the speed on the website.
+	document.getElementById("speed").textContent = `${lat},${lng},${lat2},${lng2}`;
+}
 
 //This function is called when we want an error message displayed. It changes the error/file-success-message displaytype from "none" to "block", which makes it visible, and then styles it.
 function displayErrorMessage(message) {
@@ -285,6 +295,7 @@ function disableEnable() {
         //latitude- and longitude.disable is set to false for the static lat and long. The start and stop-cords.disabled is set to true.
         latitude.disabled = false; longitude.disabled = false;
         startlat.disabled = true; startlong.disabled = true; stoplat.disabled = true; stoplong.disabled = true;
+        document.getElementById("speed").textContent = "";
         //All coordinates are reset when changing from static to motion.
         lat = null; lng = null; lat2 = null; lng2 = null;
         //Send the reset variables (null) to the inputfields in the html-document.
