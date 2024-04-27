@@ -42,8 +42,8 @@ document.addEventListener('DOMContentLoaded', function() {
         //Function that adds to the first position (lat and lng).
         function addToFirst() {
             //e.lating.lat/lng is the function that gets the location where the map is pressed. e stands for event object, and latlng is the function used, and then lat or lng is specified based on which one you want. In this case we store both lat and long with 4 decimals.
-            lat = e.latlng.lat.toFixed(4);
-            lng = e.latlng.lng.toFixed(4);
+            lat = e.latlng.lat.toFixed(6);
+            lng = e.latlng.lng.toFixed(6);
             //Sends the lat and long back to the startlat and startlong inputfields in the html-document.
             document.getElementById("startlat").value = lat;
             document.getElementById("startlong").value = lng;
@@ -51,8 +51,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
         //Function that adds to the second position (lat2 and lng2).
         function addToSecond() {
-            lat2 = e.latlng.lat.toFixed(4);
-            lng2 = e.latlng.lng.toFixed(4);
+            lat2 = e.latlng.lat.toFixed(6);
+            lng2 = e.latlng.lng.toFixed(6);
             //Sends the lat and long back to the stoplat and stoplong inputfields in the html-document.
             document.getElementById("stoplat").value = lat2;
             document.getElementById("stoplong").value = lng2;
@@ -72,8 +72,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
         //If the checkbox for path motion is not checked, only the first position is used. There is no end position.
         if (!checkbox.checked) {
-            lat = e.latlng.lat.toFixed(4);
-            lng = e.latlng.lng.toFixed(4);
+            lat = e.latlng.lat.toFixed(6);
+            lng = e.latlng.lng.toFixed(6);
             document.getElementById('latitude').value = lat;
             document.getElementById('longitude').value = lng;
 
@@ -122,6 +122,50 @@ function calculateSpeedAuto(lat1, lng1, lat2, lng2, dur) {
     document.getElementById("speed").textContent = `${lat1},${lng1},${lat2},${lng2},${dur}`;
 }
 
+function radianKalkulator(degrees) {
+    return degrees * Math.PI / 180;
+}
+
+function avstandKalkulator(lat1, lng1, lat2, lng2) {
+    // Radius of the Earth in km
+    const R = 6371.0;
+    
+    // Convert latitude and longitude from degrees to radians
+    lat1 = radianKalkulator(lat1);
+    lng1 = radianKalkulator(lng1);
+    lat2 = radianKalkulator(lat2);
+    lng2 = radianKalkulator(lng2);
+    
+    // Calculate the change in coordinates
+    const dlng = lng2 - lng1;
+    const dlat = lat2 - lat1;
+    
+    // Calculate the distance using Haversine formula
+    const a = Math.sin(dlat / 2) ** 2 + Math.cos(lat1) * Math.cos(lat2) * Math.sin(dlng / 2) ** 2;
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const distance = R * c;
+    
+    return distance;
+}
+
+function fartKalkulator(lat1, lng1, lat2, lng2, dur) {
+    lat1 = parseFloat(lat1);
+    lng1 = parseFloat(lng1);
+    lat2 = parseFloat(lat2);
+    lng2 = parseFloat(lng2);
+    dur = parseInt(dur);
+    // Calculate the distance between the points
+    const distance_km = avstandKalkulator(lat1, lng1, lat2, lng2);
+    
+    // Convert duration from seconds to hours
+    const dur_hours = dur / 3600;
+    
+    // Calculate speed in km/h
+    const speed_kph = distance_km / dur_hours;
+    
+    return Math.round(speed_kph);
+}
+
 function calculateSpeedButton() {
     const lat1 = document.getElementById('startlat').value;
     const lng1 = document.getElementById('startlong').value;
@@ -130,7 +174,8 @@ function calculateSpeedButton() {
     const dur = document.getElementById('duration-input').value;
     if ((lat1 != (null || "")) && (lng1 != (null || "")) && (lat2 != (null || "")) && (lng2 != (null || "")) && (dur != (null || "" || 0))) {
         document.getElementById("speed").style.color = "black";
-    	document.getElementById("speed").textContent = `Speed: 69 xD`;
+        document.getElementById("speed").style.fontWeight = "bold";
+    	document.getElementById("speed").textContent = `Speed: ${fartKalkulator(lat1, lng1, lat2, lng2, dur)} km/h`;
     }
     else {
         document.getElementById("speed").style.color = "red";
