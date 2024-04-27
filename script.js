@@ -122,61 +122,74 @@ function calculateSpeedAuto(lat1, lng1, lat2, lng2, dur) {
     document.getElementById("speed").textContent = `${lat1},${lng1},${lat2},${lng2},${dur}`;
 }
 
-function radianKalkulator(degrees) {
+//Calculates radians from degrees.
+function radianCalculator(degrees) {
     return degrees * Math.PI / 180;
 }
 
-function avstandKalkulator(lat1, lng1, lat2, lng2) {
-    // Radius of the Earth in km
-    const R = 6371.0;
+//!!!
+//KILDE: https://stackoverflow.com/questions/4913349/haversine-formula-in-python-bearing-and-distance-between-two-gps-points
+//!!!
+
+//Calculates distance from two coordinate points on earth.
+function distanceCalculator(lat1, lng1, lat2, lng2) {
+    //Earths radius in kilometers.
+    const earthRadius= 6371.0;
     
-    // Convert latitude and longitude from degrees to radians
-    lat1 = radianKalkulator(lat1);
-    lng1 = radianKalkulator(lng1);
-    lat2 = radianKalkulator(lat2);
-    lng2 = radianKalkulator(lng2);
+    //Converts all the coordinates to radians.
+    lat1 = radianCalculator(lat1);
+    lng1 = radianCalculator(lng1);
+    lat2 = radianCalculator(lat2);
+    lng2 = radianCalculator(lng2);
     
-    // Calculate the change in coordinates
-    const dlng = lng2 - lng1;
-    const dlat = lat2 - lat1;
+    //This is the change in location for both lat and long.
+    const lat_diff = lat2 - lat1;
+    const lng_diff = lng2 - lng1;
     
-    // Calculate the distance using Haversine formula
-    const a = Math.sin(dlat / 2) ** 2 + Math.cos(lat1) * Math.cos(lat2) * Math.sin(dlng / 2) ** 2;
+    //Uses the Haversine formula to calculate the distance between two locations in kilometers.
+    const a = Math.sin(lat_diff / 2) ** 2 + Math.cos(lat1) * Math.cos(lat2) * Math.sin(lng_diff / 2) ** 2;
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    const distance = R * c;
+    const distance_km = earthRadius * c;
     
-    return distance;
+    //Returns the distance between the two coordinates in kilometers.
+    return distance_km;
 }
 
-function fartKalkulator(lat1, lng1, lat2, lng2, dur) {
+//The function that starts the speed-calculation.
+function speedCalculator(lat1, lng1, lat2, lng2, dur) {
     lat1 = parseFloat(lat1);
     lng1 = parseFloat(lng1);
     lat2 = parseFloat(lat2);
     lng2 = parseFloat(lng2);
     dur = parseInt(dur);
-    // Calculate the distance between the points
-    const distance_km = avstandKalkulator(lat1, lng1, lat2, lng2);
+    //Calculates the distance between the two coordinates.
+    const distance_km = distanceCalculator(lat1, lng1, lat2, lng2);
     
-    // Convert duration from seconds to hours
+    //Converts the durations from seconds to hours.
     const dur_hours = dur / 3600;
     
-    // Calculate speed in km/h
-    const speed_kph = distance_km / dur_hours;
+    //Calculates the speed in km/h.
+    const speed_kmh = distance_km / dur_hours;
     
-    return Math.round(speed_kph);
+    //Rounds the speed to the closest whole number.
+    return Math.round(speed_kmh);
 }
 
+//This function is ran when we press the calculate speedbutton.
 function calculateSpeedButton() {
     const lat1 = document.getElementById('startlat').value;
     const lng1 = document.getElementById('startlong').value;
     const lat2 = document.getElementById('stoplat').value;
     const lng2 = document.getElementById('stoplong').value;
     const dur = document.getElementById('duration-input').value;
+    //Does not calculate or show any speed or distance if not all the variables above is given a value.
     if ((lat1 != (null || "")) && (lng1 != (null || "")) && (lat2 != (null || "")) && (lng2 != (null || "")) && (dur != (null || "" || 0))) {
         document.getElementById("speed").style.color = "black";
         document.getElementById("speed").style.fontWeight = "bold";
-    	document.getElementById("speed").textContent = `Speed: ${fartKalkulator(lat1, lng1, lat2, lng2, dur)} km/h`;
+        //Displays the speed and distance via innerHTML instead of textContent to be able to add <br>, which prints a newline in html. It also rounds the distance to 2 decimals.
+    	document.getElementById("speed").innerHTML = `Speed: ${speedCalculator(lat1, lng1, lat2, lng2, dur)} km/h<br>Distance: ${distanceCalculator(lat1,lng1,lat2,lng2).toFixed(2)} km`;
     }
+    //Displays missing arguments message if not all variables are given a value.
     else {
         document.getElementById("speed").style.color = "red";
     	document.getElementById("speed").textContent = "Missing argument(s) to calculate speed.";
