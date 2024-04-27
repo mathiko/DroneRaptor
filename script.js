@@ -98,8 +98,6 @@ document.addEventListener('DOMContentLoaded', function() {
             //If both of the inputfields for position one is given values, and either lat2 or lng2 is not given a value, we add to the inputfields for the second position.
             else if (((lat != null) && (lng != null)) && ((lat2 == null) || (lng2 == null))){
                 addToSecond();
-                //Runs speed-calculating function to show speed on website.
-                calculateSpeedAuto(lat, lng, lat2, lng2);
             }
 
             //If both lat and lng is given a value for both first and second position, we start over and give the pressed location to the first position again.
@@ -110,8 +108,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 document.getElementById("stoplat").value = lat2;
                 document.getElementById("stoplong").value = lng2;
                 addToFirst();
-                //Removes the speed from the screen.
-                document.getElementById("speed").textContent = "";
             }
         }
     });
@@ -121,21 +117,24 @@ document.addEventListener('DOMContentLoaded', function() {
 var indexCount = 1;
 
 //Function that calculates the speed using the two positions given as arguments.
-function calculateSpeedAuto(lat1, lng1, lat2, lng2) {
+function calculateSpeedAuto(lat1, lng1, lat2, lng2, dur) {
     //Displays the speed on the website.
-    document.getElementById("speed").textContent = `${lat},${lng},${lat2},${lng2}`;
+    document.getElementById("speed").textContent = `${lat1},${lng1},${lat2},${lng2},${dur}`;
 }
 
 function calculateSpeedButton() {
-    const lat = document.getElementById('startlat').value;
-    const lng = document.getElementById('startlong').value;
+    const lat1 = document.getElementById('startlat').value;
+    const lng1 = document.getElementById('startlong').value;
     const lat2 = document.getElementById('stoplat').value;
     const lng2 = document.getElementById('stoplong').value;
-    if ((lat != (null || "")) && (lng != (null || "")) && (lat2 != (null || "")) && (lng2 != (null || ""))) {
-    	document.getElementById("speed").textContent = `${lat},${lng},${lat2},${lng2}`;
+    const dur = document.getElementById('duration-input').value;
+    if ((lat1 != (null || "")) && (lng1 != (null || "")) && (lat2 != (null || "")) && (lng2 != (null || "")) && (dur != (null || "" || 0))) {
+        document.getElementById("speed").style.color = "black";
+    	document.getElementById("speed").textContent = `Speed: 69 xD`;
     }
     else {
-    	document.getElementById("speed").textContent = "";
+        document.getElementById("speed").style.color = "red";
+    	document.getElementById("speed").textContent = "Missing argument(s) to calculate speed.";
     }
 }
 
