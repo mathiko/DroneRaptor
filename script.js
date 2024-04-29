@@ -88,7 +88,7 @@ document.addEventListener('DOMContentLoaded', function() {
             marker = L.marker([lat, lng]).addTo(mymap);
         }
 
-        //If the checkbox is checked, we use both start and stop position, and therefore both lat,lng,lat2,lng2.
+        //If checkbox is checked, we use both start and stop position, and therefore both lat,lng,lat2,lng2.
         else {
             //If the first position is not chosen (if either lat or lng is not given a value), we add the coordinates pressed on the map to the inputfields for the first position.
             if ((lat == null) || (lng == null)) {
@@ -122,16 +122,13 @@ function calculateSpeedAuto(lat1, lng1, lat2, lng2, dur) {
     document.getElementById("speed").textContent = `${lat1},${lng1},${lat2},${lng2},${dur}`;
 }
 
-//Calculates radians from degrees.
+// Calculates radians from degrees.
 function radianCalculator(degrees) {
     return degrees * Math.PI / 180;
 }
 
-//!!!
-//KILDE: https://stackoverflow.com/questions/4913349/haversine-formula-in-python-bearing-and-distance-between-two-gps-points
-//!!!
-
-//Calculates distance from two coordinate points on earth.
+// Calculates distance from two coordinate points on earth.
+// Source: https://stackoverflow.com/questions/4913349/haversine-formula-in-python-bearing-and-distance-between-two-gps-points
 function distanceCalculator(lat1, lng1, lat2, lng2) {
     //Earths radius in kilometers.
     const earthRadius= 6371.0;
@@ -142,7 +139,7 @@ function distanceCalculator(lat1, lng1, lat2, lng2) {
     lat2 = radianCalculator(lat2);
     lng2 = radianCalculator(lng2);
     
-    //This is the change in location for both lat and long.
+    //Difference of start/stop lat and long.
     const lat_diff = lat2 - lat1;
     const lng_diff = lng2 - lng1;
     

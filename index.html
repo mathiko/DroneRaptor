@@ -5,70 +5,81 @@
   <meta charset="UTF-8"> <!--Declares type of character-set-->
   <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!--Sets app-width based on device, and sets scale to app-scale to 1-->
   <title>Spoofing Application</title>
-  <link rel="stylesheet" href="styles.css"> <!--Links website with the stylesheet-->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" /> <!--Links the leaflet map with its own stylesheet-->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" /> <!--Links the geocoder with its own stylesheet-->
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron" rel="stylesheet"> <!--Imports a non-inbuilt fontstyle-->
+  <link rel="stylesheet" href="styles.css"> <!--Link, Stylesheet-->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" /> <!-- Link, stylesheet for leaflet map-->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" /> <!--Link, stylesheet for geocoder -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron" rel="stylesheet"> <!-- Font Import-->
 </head>
 
 <body>
-  <div id="container"> <!--Main div for the whole webapplication-->
-    <img src="bilde2.jpg" alt="Logo" id="logo"> <!--Adds logo to the website-->
-    <h1 id="title">Drone Raptor</h1>
+  <div id="container"> <!-- Container, webapp content -->
+    <img src="logo.jpg" alt="Logo" id="logo"> <!-- Logo -->
+    <h1 id="title">Drone Raptor</h1>            <!-- Title -->
 
-    <div id="mapid"></div> <!--Div where the leaflet map and its design is put-->
+    <div id="mapid"></div> <!-- Div, leaflet map -->
 
-    <input type="checkbox" id="checkbox" onclick="disableEnable()"></input> <!--Checkbox to enable or disable path motion-->
-    <label for="checkbox"><strong>Enable Path motion</strong></label> <!--Label for the checkbox-->
+    <input type="checkbox" id="checkbox" onclick="disableEnable()"></input> <!-- Checkbox, enable disable path motion-->
+    <label for="checkbox">
+      <strong>Enable Path motion</strong> <!-- Checkbox description -->
+    </label>
     
-    <div class="row"> <!--Div for the two columns below-->
-      <div class="column"> <!--Column-div for non-motion spoofing inputfields-->
-        <div><p class="paragraph">Latitude:</p><input id="latitude" class="latLong" type="text"></input></div> <!--Inputfield for latitude-->
-        <div><p class="paragraph">Longitude:</p><input id="longitude" class="latLong" type="text"></input></div> <!--Inputfield for longitude-->
+    <div class="row"> <!-- Row, position coordinates -->
+      <div class="column"> <!-- Column, static spoofing input fields -->
+        <div> <!--Input field, latitude-->
+          <p>Latitude:</p>
+          <input id="latitude" class="latLong" type="text"></input>
+        </div>
+        <div> <!--Input field, longitude-->
+          <p>Longitude:</p>
+          <input id="longitude" class="latLong" type="text"></input>
+        </div>
       </div>
-      <div class="column"> <!--Column-div for motion spoofing inputfields-->
-        <div id="startdiv"><p class="paragraph">Start-pos (lat | long):</p>
-          <!--Inputfields for startposition (disabled until checkbox for motion is checked)-->
-          <input id="startlat" class="startStopLat" type="text" disabled></input><input id="startlong" class="startStopLong" type="text" disabled></input>
+      <div class="column"> <!-- Column, motion spoofing input fields -->
+        <div class="startstop-container"> <!--Input fields, start position, disabled by default -->
+          <p>Start-pos (lat | long):</p>
+          <input id="startlat" class="startStop" type="text" disabled></input>   <!-- input, start position lat -->
+          <input id="startlong" class="startStop" type="text" disabled></input> <!-- input, start position long -->
         </div>
-        <div id="stopdiv"><p class="paragraph">Stop-pos (lat | long):</p>
-          <!--Inputfields for stopposition (disabled until checkbox for motion is checked)-->
-          <input id="stoplat" class="startStopLat" type="text" disabled></input><input id="stoplong" class="startStopLong" type="text" disabled></input>
+        <div class="startstop-container"> <!-- Input fields, stop position, disabled by default -->
+          <p>Stop-pos (lat | long):</p>
+          <input id="stoplat" class="startStop" type="text" disabled></input>    <!-- input, stop position lat -->
+          <input id="stoplong" class="startStop" type="text" disabled></input>  <!-- input, stop position long -->
         </div>
-        <div id="speed"></div>
-        <button onclick="calculateSpeedButton()" class="button">Calculate Speed</button>
+        <div id="speed">
+          <button onclick="calculateSpeedButton()">Calculate Speed</button> <!-- calculate speed of set motion -->
+        </div>
       </div>
     </div>
 
-    <div id="filename-container"> <!--Div for filename-input, duration-input, and error-/success-messages-->
-      <div id="success-message-spoof"></div>
-      <div id="success-message-jam"></div> <!--Jamming success-message is set alone above so both spoof and jam can be shown simultaneously-->
-      <div id="error/file-success-message"></div> <!--Error/success-messages will be shown here-->
-      <input type="text" id="filename-input" placeholder="Filename"> <!--Inputfield for filename-->
-      <input type="text" id="duration-input" placeholder="Duration (s)"> <!--Inputfield for duration-->
-      <button onclick="createLocationFile()" class="button">Create Location File</button> <!--Button to create location-file-->
+    <div id="filename-container"> <!--Container: messages, filename, duration -->
+      <div id="success-message-spoof"></div>      <!-- Spoof success message -->
+      <div id="success-message-jam"></div>        <!-- Jamming success message -->
+      <div id="error/file-success-message"></div> <!-- Error/success-messages -->
+      <input type="text" id="filename-input" placeholder="Filename">      <!--Input, filename -->
+      <input type="text" id="duration-input" placeholder="Duration (s)">  <!--Input, duration -->
+      <button onclick="createLocationFile()">Create Location File</button> <!--Btn, create location-file -->
     </div>
 
-    <div id="form-container"> <!--Div for location select-menu-->
-      <select id="jam-select" class="select"> <!--Dropdown select-menu for choosing spoof-location-->
-        <option value="0">20 dB</option> <!--Standard locations with corresponding index values-->
+    <div id="form-container"> <!-- Container, dropdown menus location and jam strength-->
+      <select id="jam-select" class="select"> <!--Dropdown menu, choosing jam strength -->
+        <option value="0">20 dB</option> <!-- Strengths with corresponding index values-->
         <option value="1">30 dB</option>
         <option value="2">40 dB</option>
         <option value="3">50 dB</option>
       </select>
-      <select id="location-select" class="select"> <!--Dropdown select-menu for choosing spoof-location-->
-        <option value="0">brotorvet</option> <!--Standard locations with corresponding index values-->
+      <select id="location-select" class="select"> <!--Dropdown menu, choosing spoof-location-->
+        <option value="0">brotorvet</option> <!-- Default locations with corresponding index values-->
         <option value="1">kiel</option>
       </select>
-      <button onclick="jamStart()" class="button">Start Jamming</button> <!--Button to start jamming-->
-      <button onclick="spoofStart()" class="button">Start Spoofing</button> <!--Button to start spoofing-->
-      <button onclick="stopJam()" class="button">Stop Jamming</button> <!--Button to stop jamming-->
-      <button onclick="stopSpoof()" class="button">Stop Spoofing</button> <!--Button stop spoofing-->
+      <button onclick="jamStart()">Start Jamming</button>    <!--Btn start jam -->
+      <button onclick="spoofStart()">Start Spoofing</button> <!--Btn start spoof -->
+      <button onclick="stopJam()">Stop Jamming</button>      <!--Btn, stop jam -->
+      <button onclick="stopSpoof()">Stop Spoofing</button>   <!--Btn, stop spoof -->
     </div>
   </div>
 
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script> <!--Refers to leaflet-script to implement leaflet functionality-->
-  <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script> <!--Refers to the geocoder-script to implement location search functionality-->
-  <script src="script.js"></script> <!--Refers to script.js to implement website functionality-->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script> <!--Refers to leaflet-script, implements leaflet functionality-->
+  <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script> <!--Refers to the geocoder-script, implements location search functionality-->
+  <script src="script.js"></script> <!--Refers to script.js, implements website functionality-->
 </body>
 </html>
