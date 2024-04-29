@@ -247,8 +247,9 @@ function hideMessageJam() {
 
 //This function starts the process of spoofing when the "start spoofing"-button is pressed.
 function spoofStart() {
-    //Variable to store the index-value of the chosen location from the location dropdown-menu.
+    //Variable to store the index-value of the chosen location from the location dropdown-menu, as well as for the strength dropdown-menu.
     const index = document.getElementById("location-select").value;
+    const index2 = document.getElementById("location-strength-select").value;
     hideMessageFile(); //Removes success message from file creation when starting spoof-process.
     displaySuccessMessageSpoof("Spoofing..."); //Displays "spoofing..." when starting spoof-process.
     //Fetch connects to the "spoof-request" endpoint made on the server, and then POST's index to it as JSON format.
@@ -257,7 +258,7 @@ function spoofStart() {
         headers: { //Declares what type of content will be sent with the POST.
             "Content-Type": "application/json",
         },
-        body: JSON.stringify({ index }), //Converts the index to JSON-format, and appends it to the POST-body.
+        body: JSON.stringify({ index, index2 }), //Converts the indexes to JSON-format, and appends it to the POST-body.
     })
     .then(response => { //.then happens after the fetch, and takes care of the response. If the respons.ok is true, the HTTP-request was successful. If it was not ok, the request was unsuccessful.
         if (response.ok) {

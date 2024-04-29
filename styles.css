@@ -14,10 +14,15 @@ button { /* Buttons */
   color: white;               /* text color */
   border-radius: 4px;           /* button border */
   cursor: pointer;              /* cursor type on hover */
+  margin-bottom: 1px;
 }
 
 button:hover { /* Buttons hover */
   background-color: #002c5b; /* button color */
+}
+
+.calculatebutton{
+  width: 160px;
 }
 
 #container { /* Content container */
@@ -59,7 +64,7 @@ button:hover { /* Buttons hover */
 
 
 #checkbox { /* checkbox */
-  margin: 2%;         /* margin */
+  margin: 5px;         /* margin */
   margin-right: 0px;  /* right margin */
   width: 20px;        /* checkbox width */
   height: 20px;       /* checkbox height */
@@ -70,15 +75,30 @@ label, input[type="checkbox"] { /* checkbox, label alignment */
   vertical-align: middle; /* alignment */
 }
 
+.row{
+  border: dotted darkslategrey 2px;
+  margin: 10px auto auto auto;
+  border-radius: 10px;
+  padding: 10px 15px 5px 15px;
+  width: 550px;
+}
+
 .row:after{ /* Row, clear flex and formating after row*/
   content: ""; 
   display:table;
   clear: both;
 }
 
-.column { /* Column, position specification */
+.column1 { /* Column, position specification */
   float: left; /* position left */ 
   width: 45%;  /* width of each column */
+  margin-top: 10px;
+}
+
+.column2 { /* Column, position specification */
+  float: left; /* position left */ 
+  width: 45%;  /* width of each column */
+  margin-top: 5px;
 }
 
 .latLong { /* Input fields in first column, static position */
@@ -89,28 +109,32 @@ label, input[type="checkbox"] { /* checkbox, label alignment */
 }
 
 #filename-container { /* Container, filename and duration inputs, create file button */
-  margin-top: 20px;     /* Margin top */
+  margin: 20px auto 20px auto;     /* Margin top */
+  width: 430px;
 }
 
 #filename-input { /*In filename-container, filename input */
-  margin-bottom: 10px;  /* Margin bottom */
+  margin-bottom: 7px;  /* Margin bottom */
+  margin-top: 20px;
 }
 
 #duration-input { /*In filename-container, duration input */
-  margin-bottom: 10px;  /* Margin bottom */
+  margin-bottom: 7px;  /* Margin bottom */
   width: 72px;          /* Fixed width */
 }
 
 #form-container { /* Container, dropdown menu, start/stop buttons */
   text-align: center;   /* Center texts */
-  margin-left: auto;    /* Dynamic margin left */
-  margin-right: auto;   /* Dynamic margin right */
-  width: 265px;         /* fixed width */
+  margin: 10px auto 0px auto;
+  width: 360px;         /* fixed width */
+  border: dotted darkslategrey 2px;
+  border-radius: 10px;
+  padding: 0px 5px 10px 5px;
 }
 
 .select { /* dropdown menu */
-  margin-top: 15px;     /* margin top */
-  margin-bottom: 5px;   /* margin bottom */
+  margin-top: 10px;     /* margin top */
+  margin-bottom: 10px;   /* margin bottom */
   width: 100px;         /* fixed width */
 }
 
@@ -125,14 +149,27 @@ label, input[type="checkbox"] { /* checkbox, label alignment */
   margin: 0 3px 0 3px;  /* margin */
 }
 
-#speed { /* container, calculate speed */
+#speed { /* container */
   margin-top: 10px;  /* top margin */
 }
 
+.bottom-border{
+  border-bottom: dotted darkslategrey 2px;
+}
+
+.bottom-border2{
+  border-bottom: dotted darkslategrey 2px;
+  margin-bottom: 10px;
+}
+
 @media screen and (max-width: 530px) { /*Style when screensize < 530px*/
-  .column{
+  .column1{
     float: none;  /* change floating, vertical */
-    margin-top: 3px; /* margin */
+    margin-top: 10px; /* margin */
+  }
+  .column2{
+    float: none;  /* change floating, vertical */
+    margin-top: 10px; /* margin */
   }
   #title{         /* title */
     font-size: 6vw; /* dynamic size */
@@ -142,5 +179,18 @@ label, input[type="checkbox"] { /* checkbox, label alignment */
     left: 5px;      /* left alignment */
     width: 20vw;    /* dynamic width */
     height: 20vw;   /* dynamic height */
+  }
+  #filename-container{
+    width: auto;
+    margin: 10px auto 10px auto;
+  }
+  #form-container{
+    padding: 0 5px 10px 5px;
+    width:280px;
+  }
+
+  .row {
+    padding: 10px 15px 5px 15px;
+    width: auto;
   }
 }

@@ -18,13 +18,16 @@
 
     <div id="mapid"></div> <!-- Div, leaflet map -->
 
-    <input type="checkbox" id="checkbox" onclick="disableEnable()"></input> <!-- Checkbox, enable disable path motion-->
-    <label for="checkbox">
-      <strong>Enable Path motion</strong> <!-- Checkbox description -->
-    </label>
+
     
     <div class="row"> <!-- Row, position coordinates -->
-      <div class="column"> <!-- Column, static spoofing input fields -->
+      <div>
+        <input type="checkbox" id="checkbox" onclick="disableEnable()"></input> <!-- Checkbox, enable disable path motion-->
+        <label for="checkbox">
+          <strong>Enable Path motion</strong> <!-- Checkbox description -->
+        </label>
+      </div>
+      <div class="column1"> <!-- Column, static spoofing input fields -->
         <div> <!--Input field, latitude-->
           <p>Latitude:</p>
           <input id="latitude" class="latLong" type="text"></input>
@@ -34,7 +37,7 @@
           <input id="longitude" class="latLong" type="text"></input>
         </div>
       </div>
-      <div class="column"> <!-- Column, motion spoofing input fields -->
+      <div class="column2"> <!-- Column, motion spoofing input fields -->
         <div class="startstop-container"> <!--Input fields, start position, disabled by default -->
           <p>Start-pos (lat | long):</p>
           <input id="startlat" class="startStop" type="text" disabled></input>   <!-- input, start position lat -->
@@ -45,32 +48,56 @@
           <input id="stoplat" class="startStop" type="text" disabled></input>    <!-- input, stop position lat -->
           <input id="stoplong" class="startStop" type="text" disabled></input>  <!-- input, stop position long -->
         </div>
+        <button class="calculatebutton" onclick="calculateSpeedButton()">Calculate Speed</button> <!-- calculate speed of set motion -->
         <div id="speed">
-          <button onclick="calculateSpeedButton()">Calculate Speed</button> <!-- calculate speed of set motion -->
         </div>
+      </div>
+      
+      <div id="filename-container"> <!--Container: messages, filename, duration -->
+        <div id="success-message-spoof"></div>      <!-- Spoof success message -->
+        <div id="success-message-jam"></div>        <!-- Jamming success message -->
+        <div id="error/file-success-message"></div> <!-- Error/success-messages -->
+        <input type="text" id="filename-input" placeholder="Filename">      <!--Input, filename -->
+        <input type="text" id="duration-input" placeholder="Duration (s)">  <!--Input, duration -->
+        <button onclick="createLocationFile()">Create Location File</button> <!--Btn, create location-file -->
       </div>
     </div>
 
-    <div id="filename-container"> <!--Container: messages, filename, duration -->
-      <div id="success-message-spoof"></div>      <!-- Spoof success message -->
-      <div id="success-message-jam"></div>        <!-- Jamming success message -->
-      <div id="error/file-success-message"></div> <!-- Error/success-messages -->
-      <input type="text" id="filename-input" placeholder="Filename">      <!--Input, filename -->
-      <input type="text" id="duration-input" placeholder="Duration (s)">  <!--Input, duration -->
-      <button onclick="createLocationFile()">Create Location File</button> <!--Btn, create location-file -->
-    </div>
 
     <div id="form-container"> <!-- Container, dropdown menus location and jam strength-->
-      <select id="jam-select" class="select"> <!--Dropdown menu, choosing jam strength -->
-        <option value="0">20 dB</option> <!-- Strengths with corresponding index values-->
-        <option value="1">30 dB</option>
-        <option value="2">40 dB</option>
-        <option value="3">50 dB</option>
-      </select>
-      <select id="location-select" class="select"> <!--Dropdown menu, choosing spoof-location-->
-        <option value="0">brotorvet</option> <!-- Default locations with corresponding index values-->
-        <option value="1">kiel</option>
-      </select>
+      <div  class="bottom-border">
+        <label for="jam-select">Jammer strength/type</label>
+        <select id="jam-select" class="select"> <!--Dropdown menu, choosing jam strength-->
+          <option value="0">20 dB GPS</option> <!-- Strengths and jam-type with corresponding index values-->
+          <option value="1">30 dB GPS</option>
+          <option value="2">40 dB GPS</option>
+          <option value="3">50 dB GPS</option>
+          <option value="4">20 dB GNSS</option>
+          <option value="5">30 dB GNSS</option>
+          <option value="6">40 dB GNSS</option>
+          <option value="7">50 dB GNSS</option>
+        </select>
+      </div>
+      
+      <div>
+        <label for="location-select">Spoofer location</label>
+        <select id="location-select" class="select"> <!--Dropdown menu, choosing spoof-location-->
+          <option value="0">oslo</option> <!-- Default locations with corresponding index values-->
+          <option value="1">kiel</option>
+        </select>
+      </div>
+
+      <div  class="bottom-border2">
+        <label for="location-strength-select">Spoofer strength</label>
+        <select id="location-strength-select" class="select"> <!--Dropdown menu, choosing spoof-strength-->
+          <option value="0">10 dB</option> <!-- Strengths with corresponding index values-->
+          <option value="1">20 dB</option>
+          <option value="2">30 dB</option>
+          <option value="3">40 dB</option>
+          <option value="4">47 dB</option>
+  
+        </select>
+      </div>
       <button onclick="jamStart()">Start Jamming</button>    <!--Btn start jam -->
       <button onclick="spoofStart()">Start Spoofing</button> <!--Btn start spoof -->
       <button onclick="stopJam()">Stop Jamming</button>      <!--Btn, stop jam -->

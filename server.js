@@ -10,22 +10,35 @@ let currentProcessJam = null; //Variable to store the jam-process.
 //Uses the os-module to save the username of the machine running the server.
 const username = os.userInfo().username;
 //Variable holding the spoofing command and its static parameters.
-const transferCommandSpoof = "/usr/bin/hackrf_transfer -d 0000000000000000223c69dc277f684f -s 2600000 -f 1575420000 -a 0 -x 0";
+const transferCommandSpoof = "/usr/bin/hackrf_transfer -d 0000000000000000223c69dc277f684f -s 2600000 -f 1575420000 -a 1";
 //Variable holding the jamming command.
 const transferCommandJam = "/usr/bin/python3";
 
 //List that stores all locations and their respective filepaths and names.
 const locationParameters = [
-    { name: 'brotorvet', path: `/home/${username}/gps-sdr-sim/brotorvet.bin` },
+    { name: 'oslo', path: `/home/${username}/gps-sdr-sim/oslo.bin` },
     { name: 'kiel', path: `/home/${username}/gps-sdr-sim/kiel.bin` }
+];
+
+//List that stores all the Spoofer-strengths and their respective filepaths and names.
+const spoofParameters = [
+    { name: `10db`, value: 10},
+    { name: `20db`, value: 20},
+    { name: `30db`, value: 30},
+    { name: `40db`, value: 40},
+    { name: `47db`, value: 47}
 ];
 
 //List that stores all the Jammer-files and their respective filepaths and names.
 const jamParameters = [
-    { name: `20db`, path: `/home/${username}/gps-sdr-sim/JammerA1X10.py`},
-    { name: `30db`, path: `/home/${username}/gps-sdr-sim/JammerA1X20.py`},
-    { name: `40db`, path: `/home/${username}/gps-sdr-sim/JammerA1X30.py`},
-    { name: `50db`, path: `/home/${username}/gps-sdr-sim/JammerA1X40.py`}
+    { name: `20db GPS`, path: `/home/${username}/gps-sdr-sim/GPSJammerA1X10.py`},
+    { name: `30db GPS`, path: `/home/${username}/gps-sdr-sim/GPSJammerA1X20.py`},
+    { name: `40db GPS`, path: `/home/${username}/gps-sdr-sim/GPSJammerA1X30.py`},
+    { name: `50db GPS`, path: `/home/${username}/gps-sdr-sim/GPSJammerA1X40.py`},
+    { name: `20db GNSS`, path: `/home/${username}/gps-sdr-sim/GNSSJammerA1X40.py`},
+    { name: `30db GNSS`, path: `/home/${username}/gps-sdr-sim/GNSSJammerA1X40.py`},
+    { name: `40db GNSS`, path: `/home/${username}/gps-sdr-sim/GNSSJammerA1X40.py`},
+    { name: `50db GNSS`, path: `/home/${username}/gps-sdr-sim/GNSSJammerA1X40.py`}
 ];
 
 app.use(express.json()); // Enables the server to work with data sent in JSON format in HTTP-requests.
@@ -34,13 +47,14 @@ app.use(express.static('public')); //Allows express to serve all files located i
 //Endpoint for the webclient script to request spoofing via POST http-requests.
 app.post('/spoof-request', (req, res) => { //req is the info of the request from the webclient, and the res is the respond sent back from the server (here) to the webclient again.
     const index = req.body.index; //Variable to save the index sent from the webclient.
+    const index2 = req.body.index2; //Variable to save the index2 sent from the webclient.
 
     //Runs the checkprocess function to check if any process with the name "hackrf_transfer" is already running.
     checkProcessRunning("hackrf_transfer", (isRunning) => {
         //If there is not already an instance of the process, we start the spoofing-process.
         if (!isRunning) {
             console.log("\nSpoofing started successfully.")
-            startTransferSpoof(res, index);
+            startTransferSpoof(res, index, index2);
         }
         
         //If there is already an instance, we give an error and don't start a new one.
@@ -118,11 +132,12 @@ app.post('/create-motion-location-file', (req, res) => {
 });
 
 //This is the function that executes the command to start the spoofing-process.
-function startTransferSpoof(res, index) {
+function startTransferSpoof(res, index, index2) {
     //This is a none-static parameter since the path relies on what location is being spoofed to, and is therefore not added to the transferCommandSpoof-variable. The index of the location is passed to the function, and the path of the location placed at that index is saved in filename.
     const filename = `-t ${locationParameters[index].path}`;
+    const strength = `-x ${spoofParameters[index2].value}`;
     //Saves and runs the process in a variable so it can be accessed.
-    currentProcessSpoof = exec(`${transferCommandSpoof} ${filename}`);
+    currentProcessSpoof = exec(`${transferCommandSpoof} ${strength} ${filename}`);
 
     //This runs an eventlistener to the stdout-function on the "currentProcessSpoof" called "data". This "data"-function checks whenever new data is available from stdout, and when there is new data, it runs the callback function "(data) => {console.log(data);", which prints that data to the console.
     currentProcessSpoof.stdout.on('data', (data) => {
