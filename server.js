@@ -31,10 +31,10 @@ const spoofParameters = [
 
 //List that stores all the Jammer-files and their respective filepaths and names.
 const jamParameters = [
-    { name: `20db GPS`, path: `/home/${username}/gps-sdr-sim/GPSJammerA1X10.py`},
-    { name: `30db GPS`, path: `/home/${username}/gps-sdr-sim/GPSJammerA1X20.py`},
-    { name: `40db GPS`, path: `/home/${username}/gps-sdr-sim/GPSJammerA1X30.py`},
-    { name: `50db GPS`, path: `/home/${username}/gps-sdr-sim/GPSJammerA1X40.py`},
+    { name: `20db GPS`, path: `/home/${username}/gps-sdr-sim/JammerA1X10.py`},
+    { name: `30db GPS`, path: `/home/${username}/gps-sdr-sim/JammerA1X20.py`},
+    { name: `40db GPS`, path: `/home/${username}/gps-sdr-sim/JammerA1X30.py`},
+    { name: `50db GPS`, path: `/home/${username}/gps-sdr-sim/JammerA1X40.py`},
     { name: `20db GNSS`, path: `/home/${username}/gps-sdr-sim/GNSSJammerA1X10.py`},
     { name: `30db GNSS`, path: `/home/${username}/gps-sdr-sim/GNSSJammerA1X20.py`},
     { name: `40db GNSS`, path: `/home/${username}/gps-sdr-sim/GNSSJammerA1X30.py`},
