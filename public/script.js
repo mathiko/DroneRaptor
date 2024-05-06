@@ -252,7 +252,7 @@ function spoofStart() {
     const index2 = document.getElementById("location-strength-select").value;
     hideMessageFile(); //Removes success message from file creation when starting spoof-process.
     displaySuccessMessageSpoof("Spoofing..."); //Displays "spoofing..." when starting spoof-process.
-    //Fetch connects to the "spoof-request" endpoint made on the server, and then POST's index to it as JSON format.
+    //Fetch connects to the "spoof-request" endpoint made on the server, and then POSTs index's to it as JSON format.
     fetch("/spoof-request", {
         method: "POST", //Declares what type of HTTP-method to use.
         headers: { //Declares what type of content will be sent with the POST.
