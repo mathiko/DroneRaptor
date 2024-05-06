@@ -35,10 +35,11 @@ const jamParameters = [
     { name: `30db GPS`, path: `/home/${username}/gps-sdr-sim/GPSJammerA1X20.py`},
     { name: `40db GPS`, path: `/home/${username}/gps-sdr-sim/GPSJammerA1X30.py`},
     { name: `50db GPS`, path: `/home/${username}/gps-sdr-sim/GPSJammerA1X40.py`},
-    { name: `20db GNSS`, path: `/home/${username}/gps-sdr-sim/GNSSJammerA1X40.py`},
-    { name: `30db GNSS`, path: `/home/${username}/gps-sdr-sim/GNSSJammerA1X40.py`},
-    { name: `40db GNSS`, path: `/home/${username}/gps-sdr-sim/GNSSJammerA1X40.py`},
-    { name: `50db GNSS`, path: `/home/${username}/gps-sdr-sim/GNSSJammerA1X40.py`}
+    { name: `20db GNSS`, path: `/home/${username}/gps-sdr-sim/GNSSJammerA1X10.py`},
+    { name: `30db GNSS`, path: `/home/${username}/gps-sdr-sim/GNSSJammerA1X20.py`},
+    { name: `40db GNSS`, path: `/home/${username}/gps-sdr-sim/GNSSJammerA1X30.py`},
+    { name: `50db GNSS`, path: `/home/${username}/gps-sdr-sim/GNSSJammerA1X40.py`},
+    { name: `57dB GNSS`, path: `/home/${username}/gps-sdr-sim/GNSSJammerA1X47.py`}
 ];
 
 app.use(express.json()); // Enables the server to work with data sent in JSON format in HTTP-requests.
